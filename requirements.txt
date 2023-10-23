@@ -1,0 +1,4 @@
+openai==0.27.8
+pyperclip==1.8.2
+tiktoken==0.5.1
+tqdm==4.65.0
