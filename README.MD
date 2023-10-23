@@ -2,6 +2,8 @@
 
 The `x2Prompt` project is aimed at creating prompts for a ChatGPT by copying the contents and name of a specified files to the clipboard. The project summarizes Python scripts using the OpenAI API and estimates token usage to manage the summary performance based on a set threshold. The summarization is performed only if the token usage exceeds a specified percentage.
 
+![Example Image](example.bmp)
+
 ## Installation
 Download the project and add it to the Windows environment system PATHS.
 Type x2p in your terminal when in your project’s  directory. This does not search recursively. 
