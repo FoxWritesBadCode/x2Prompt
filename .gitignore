@@ -1,1 +1,4 @@
 local_config.py
+x2Prompt.log
+.vscode/launch.json
+__pycache__/*
