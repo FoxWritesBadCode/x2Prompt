@@ -7,7 +7,7 @@ The `x2Prompt` project is aimed at creating prompts for a ChatGPT by copying the
 ## Installation
 Download the project and add it to the Windows environment system PATHS.
 Edit the x2p.bat file to include the full path to x2Prompt.py.
-Type x2p in your terminal when in your project’s directory. This does not search recursively. 
+Type x2p in your terminal when in your project’s directory. 
 
 ## About the Author 
  I am not a developer, I am lazy. Hence the script and the format and layout of said script. Lazception.
