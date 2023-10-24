@@ -8,8 +8,12 @@ def main():
     ''' the main funtion '''
     logger.debug("Starting")
 
-    # Get paths
-    files = util.get_files(fileType, logger)
+    # Parse arguments
+    args = util.parse_args()
+
+    # Get file paths
+    searchRecursiveFlag = args.r
+    files = util.get_files(fileType, searchRecursiveFlag, logger)
 
     # Load file content
     loadedFiles = util.get_file_content(files, logger)
@@ -66,7 +70,7 @@ if __name__ == "__main__":
             checkTokenSize, tokenMaxPercent, performSummary, openAiKey, openAiModel, summaryPrompt)
 
     # Set up logging to keep track of script execution and issues
-    logger = util.setup_logs(logging.INFO, logFileName)
+    logger = util.setup_logs(logging.DEBUG, logFileName)
 
     # Execute the main function to process alerts
     main()

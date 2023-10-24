@@ -6,8 +6,45 @@ import pyperclip
 import tiktoken
 import logging
 import openai
-import openai
 import tqdm
+import argparse
+
+
+def get_files(fileType, searchRecursiveFlag, logger):
+    ''' get files that match filter '''
+    logger.debug("Starting")
+
+    invocationDirectory = os.getcwd()
+    logger.debug(f"Invoke directory: {invocationDirectory}")
+
+    # Modify the search_pattern to include '**/' when searchRecursiveFlag is True
+    search_pattern = os.path.join(
+        invocationDirectory, '**', fileType) if searchRecursiveFlag else os.path.join(invocationDirectory, fileType)
+
+    # Pass the recursive argument to glob.glob
+    python_files = glob.glob(search_pattern, recursive=searchRecursiveFlag)
+    if python_files:
+        logger.debug(f'located {python_files} using {fileType}.')
+        return python_files
+    else:
+        logger.error(
+            f'x2Prompt could not locate any files matching {fileType} in {invocationDirectory}.')
+        exit_program(logger)
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Description of your program')
+    parser.add_argument('-l', '--log', help='Log file name.',
+                        default='x2Prompt.log')
+    parser.add_argument('-f', '--fileType',
+                        help='File type to process', default='*.py')
+    parser.add_argument('-key', '--openaikey',
+                        help='OpenAI API key.')
+    parser.add_argument('--openaimodel',
+                        help='OpenAI API model to use for summaries.')
+    parser.add_argument('--r', action='store_true',
+                        help='If added it will search recursively --r')
+    return parser.parse_args()
 
 
 def summarize_scripts(loadedFiles, openAiKey, openAiModel, summaryPrompt, logger):
@@ -17,7 +54,7 @@ def summarize_scripts(loadedFiles, openAiKey, openAiModel, summaryPrompt, logger
     summaryDict = {}  # Initialize an empty dictionary to hold the summaries
 
     # Wrap loadedFiles.items() with tqdm for a progress bar
-    for file_name, file_content in tqdm(
+    for file_name, file_content in tqdm.tqdm(
         loadedFiles.items(),
         total=len(loadedFiles),
         desc="Processing files",
@@ -119,26 +156,6 @@ def get_file_content(files, logger):
         except Exception as e:
             logger.error(f"Failed to read {file_path}: {e}")
     return file_contents
-
-
-def get_files(fileType, logger):
-    ''' get files that match filter '''
-    logger.debug("Starting")
-
-    # invocationDirectory = os.path.dirname(os.path.abspath(sys.argv[0]))
-    invocationDirectory = os.getcwd()
-    logger.debug(f"Invoke directory: {invocationDirectory}")
-    search_pattern = os.path.join(invocationDirectory, fileType)
-
-    # Get a list of all Python files in the current directory
-    python_files = glob.glob(search_pattern)
-    if python_files:
-        logger.debug(f'located {python_files} using {fileType}.')
-        return python_files
-    else:
-        logger.error(
-            f'x2Prompt could not locate any files matching {fileType} in {invocationDirectory}.')
-        exit_program(logger)
 
 
 def setup_logs(logLevel, logFileName):
