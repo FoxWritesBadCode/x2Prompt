@@ -78,18 +78,26 @@ This README provides a comprehensive overview of the `x2Prompt` project, its str
 
 ```mermaid
 graph TD
-    A[psheet.py] --> B[main()]
-    B --> C[logger.info("Starting")]
-    B --> D[util.fetch_products_records(db_params, logger)]
-    D --> E1[psheet_util.py]
-    E1 --> F1[fetch_products_records(db_params, logger)]
-    F1 --> G1[SELECT id, embedding_text FROM products]
-    B --> H[for record in products_data]
-    H --> I[logger.debug("Getting Embeddings")]
-    B --> J[util.exit_program(logger)]
-    J --> E2[psheet_util.py]
-    E2 --> F2[exit_program(logger, error_message)]
-    F2 --> G2[logger.error(error_message)]
-    F2 --> H2[logger.critical("Exiting program.")]
-    F2 --> I2[exit()]
+    A[psheet.py]
+    B[main()]
+    C[logger.info("Starting")]
+    D[util.fetch_products_records]
+    E[psheet_util.py]
+    F[fetch_products_records]
+    G[SQL Query]
+    H[for loop: process products_data]
+    I[logger.debug("Getting Embeddings")]
+    J[util.exit_program]
+    K[exit_program]
+
+    A --> B
+    B --> C
+    B --> D
+    D --> E
+    E --> F
+    F --> G
+    B --> H
+    H --> I
+    B --> J
+    J --> K
 ```
