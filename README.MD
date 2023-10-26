@@ -74,3 +74,21 @@ tested that.
 ---
 
 This README provides a comprehensive overview of the `x2Prompt` project, its structure, usage, and functionality. For further details, you can refer to the comments within the code or the log file generated during script execution.
+
+
+```mermaid
+graph TD
+    A[psheet.py] --> B[main()]
+    B --> C[logger.info("Starting")]
+    B --> D[util.fetch_products_records(db_params, logger)]
+    D --> E1[psheet_util.py]
+    E1 --> F1[fetch_products_records(db_params, logger)]
+    F1 --> G1[SELECT id, embedding_text FROM products]
+    B --> H[for record in products_data]
+    H --> I[logger.debug("Getting Embeddings")]
+    B --> J[util.exit_program(logger)]
+    J --> E2[psheet_util.py]
+    E2 --> F2[exit_program(logger, error_message)]
+    F2 --> G2[logger.error(error_message)]
+    F2 --> H2[logger.critical("Exiting program.")]
+    F2 --> I2[exit()]
