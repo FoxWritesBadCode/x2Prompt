@@ -101,5 +101,5 @@ sequenceDiagram
     Clipboard->>Utils: Confirmation
     Utils->>Main: Confirmation
     Main->>Utils: exit_program(logger)
-    Utils->>Main
+    Utils->>Main: Exit program
 ```
