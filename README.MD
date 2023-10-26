@@ -74,3 +74,32 @@ tested that.
 ---
 
 This README provides a comprehensive overview of the `x2Prompt` project, its structure, usage, and functionality. For further details, you can refer to the comments within the code or the log file generated during script execution.
+
+
+```mermaid
+sequenceDiagram
+    participant Main as x2Prompt.py::main()
+    participant Logger
+    participant Utils as x2Prompt_Util.py
+    participant TikToken
+    participant Clipboard as Pyperclip
+
+    Main->>Logger: Initialize logger
+    Logger->>Main: Logger ready
+    Main->>Utils: get_files(fileType, logger)
+    Utils->>Main: Return files list
+    Main->>Utils: get_file_content(files, logger)
+    Utils->>Main: Return loadedFiles
+    Main->>Utils: build_prompt(loadedFiles, prePromptText, postPromptText, logger)
+    Utils->>Main: Return builtPrompt
+    Main->>Utils: estimate_tokens(builtPrompt, maxTokens, tokenEncodingName, logger)
+    Utils->>TikToken: Tokenize text
+    TikToken->>Utils: Return token count
+    Utils->>Main: Return num_tokens
+    Main->>Utils: send_to_clipboard(builtPrompt, logger)
+    Utils->>Clipboard: Copy builtPrompt to clipboard
+    Clipboard->>Utils: Confirmation
+    Utils->>Main: Confirmation
+    Main->>Utils: exit_program(logger)
+    Utils->>Main: Exit program
+```
