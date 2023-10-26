@@ -92,28 +92,4 @@ graph TD
     F2 --> G2[logger.error(error_message)]
     F2 --> H2[logger.critical("Exiting program.")]
     F2 --> I2[exit()]
-
-
-graph TD
-    A[psheet.py]
-    B[main()]
-    C[logger.info("Starting")]
-    D[util.fetch_products_records]
-    E[psheet_util.py]
-    F[fetch_products_records]
-    G[SQL Query]
-    H[for loop: process products_data]
-    I[logger.debug("Getting Embeddings")]
-    J[util.exit_program]
-    K[exit_program]
-
-    A --> B
-    B --> C
-    B --> D
-    D --> E
-    E --> F
-    F --> G
-    B --> H
-    H --> I
-    B --> J
-    J --> K
+```
