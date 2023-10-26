@@ -78,26 +78,28 @@ This README provides a comprehensive overview of the `x2Prompt` project, its str
 
 ```mermaid
 sequenceDiagram
-    participant Main as psheet.py::main()
+    participant Main as x2Prompt.py::main()
     participant Logger
-    participant Utils as psheet_util.py
-    participant DB as Database (PostgreSQL)
-    participant OpenAI
-    
+    participant Utils as x2Prompt_Util.py
+    participant TikToken
+    participant Clipboard as Pyperclip
+
     Main->>Logger: Initialize logger
     Logger->>Main: Logger ready
-    Main->>Utils: fetch_products_records(db_params, logger)
-    Utils->>DB: SELECT id, embedding_text FROM products
-    DB->>Utils: Return records
-    Utils->>Main: Return products_data
-    Main->>Logger: Log "Starting"
-    Main->>Main: For each record in products_data
-    Main->>Logger: Log "Getting Embeddings" for each record
-    Main->>Utils: (Future) get_openai_embedding(record)
-    Utils->>OpenAI: Request embedding for record's text
-    OpenAI->>Utils: Return embedding
-    Utils->>Main: Return embedding for record
-    Main->>Logger: Embedding retrieved for record
+    Main->>Utils: get_files(fileType, logger)
+    Utils->>Main: Return files list
+    Main->>Utils: get_file_content(files, logger)
+    Utils->>Main: Return loadedFiles
+    Main->>Utils: build_prompt(loadedFiles, prePromptText, postPromptText, logger)
+    Utils->>Main: Return builtPrompt
+    Main->>Utils: estimate_tokens(builtPrompt, maxTokens, tokenEncodingName, logger)
+    Utils->>TikToken: Tokenize text
+    TikToken->>Utils: Return token count
+    Utils->>Main: Return num_tokens
+    Main->>Utils: send_to_clipboard(builtPrompt, logger)
+    Utils->>Clipboard: Copy builtPrompt to clipboard
+    Clipboard->>Utils: Confirmation
+    Utils->>Main: Confirmation
     Main->>Utils: exit_program(logger)
-    Utils->>Main: Exit program
+    Utils->>Main
 ```
