@@ -77,27 +77,27 @@ This README provides a comprehensive overview of the `x2Prompt` project, its str
 
 
 ```mermaid
-graph TD
-    A[psheet.py]
-    B[main()]
-    C[logger.info("Starting")]
-    D[util.fetch_products_records]
-    E[psheet_util.py]
-    F[fetch_products_records]
-    G[SQL Query]
-    H[for loop: process products_data]
-    I[logger.debug("Getting Embeddings")]
-    J[util.exit_program]
-    K[exit_program]
-
-    A --> B
-    B --> C
-    B --> D
-    D --> E
-    E --> F
-    F --> G
-    B --> H
-    H --> I
-    B --> J
-    J --> K
+sequenceDiagram
+    participant Main as psheet.py::main()
+    participant Logger
+    participant Utils as psheet_util.py
+    participant DB as Database (PostgreSQL)
+    participant OpenAI
+    
+    Main->>Logger: Initialize logger
+    Logger->>Main: Logger ready
+    Main->>Utils: fetch_products_records(db_params, logger)
+    Utils->>DB: SELECT id, embedding_text FROM products
+    DB->>Utils: Return records
+    Utils->>Main: Return products_data
+    Main->>Logger: Log "Starting"
+    Main->>Main: For each record in products_data
+    Main->>Logger: Log "Getting Embeddings" for each record
+    Main->>Utils: (Future) get_openai_embedding(record)
+    Utils->>OpenAI: Request embedding for record's text
+    OpenAI->>Utils: Return embedding
+    Utils->>Main: Return embedding for record
+    Main->>Logger: Embedding retrieved for record
+    Main->>Utils: exit_program(logger)
+    Utils->>Main: Exit program
 ```
