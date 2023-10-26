@@ -13,6 +13,8 @@ import argparse
 def get_files(fileType, searchRecursiveFlag, logger):
     ''' get files that match filter '''
     logger.debug("Starting")
+    if searchRecursiveFlag:
+        logger.debug("Search recursive is enabled.")
 
     invocationDirectory = os.getcwd()
     logger.debug(f"Invoke directory: {invocationDirectory}")
@@ -44,6 +46,8 @@ def parse_args():
                         help='OpenAI API model to use for summaries.')
     parser.add_argument('--r', action='store_true',
                         help='If added it will search recursively --r')
+    parser.add_argument('--config', action='store_true',
+                        help='If added it will open a GUI to modify the config.')
     return parser.parse_args()
 
 

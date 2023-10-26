@@ -10,9 +10,15 @@ def main():
 
     # Parse arguments
     args = util.parse_args()
+    searchRecursiveFlag = args.r
+    loadConfigGui = args.config
+
+    # Check for configuration
+    if loadConfigGui:
+        logger.debug("Loading config GUI")
+        util.modifyConfig(searchRecursiveFlag, logger)
 
     # Get file paths
-    searchRecursiveFlag = args.r
     files = util.get_files(fileType, searchRecursiveFlag, logger)
 
     # Load file content
@@ -63,14 +69,14 @@ if __name__ == "__main__":
     try:
         from local_config import (
             logFileName, fileType, prePromptText, postPromptText, maxTokens, tokenEncodingName,
-            checkTokenSize, tokenMaxPercent, performSummary, openAiKey, openAiModel, summaryPrompt)
+            checkTokenSize, tokenMaxPercent, performSummary, openAiKey, openAiModel, summaryPrompt, searchRecursiveFlag)
     except ModuleNotFoundError:
         from config import (
             logFileName, fileType, prePromptText, postPromptText, maxTokens, tokenEncodingName,
-            checkTokenSize, tokenMaxPercent, performSummary, openAiKey, openAiModel, summaryPrompt)
+            checkTokenSize, tokenMaxPercent, performSummary, openAiKey, openAiModel, summaryPrompt, searchRecursiveFlag)
 
     # Set up logging to keep track of script execution and issues
-    logger = util.setup_logs(logging.DEBUG, logFileName)
+    logger = util.setup_logs(logging.INFO, logFileName)
 
     # Execute the main function to process alerts
     main()
